@@ -1,0 +1,40 @@
+getClass()
+返回此Object的运行时类。
+实际结果类型是Class<? extends |x|>,其中|x|表示清除表达式中的静态类型，该表达式调用getClass
+例如一下代码段中不需要强制转换：
+Number n = 0；
+Class<? extends Number> c = n.getClass();
+此时c的返回结果是java.lang.Integer;
+
+hashCode()
+返回对象的hash code 值。支持hashCode是为了提高类似于HashMap这种哈希表的性能
+通常的合约为：
+1.在java应用程序运行期间，在对同一对象多次调用hashCode方法时，必须一致的返回相同的整数，这个整数在同一个应用程序的不同次运行中
+2.如果两个对象的通过equals方法比较相同，那么hashCode方法也应该返回相同的整数值
+3.如果两个对象的通过equals方法比较结果不相同，hashCode方法返回的值不强制要求不同，但是值得注意的是hashCode的值不相同会提高哈希表的效率
+实际上，由Object类定义的hashCode方法确实会针对不同的对象返回不同的整数。
+
+equals()
+指示是否一个对象等于另一个对象
+equals方法实现了对于一个非空对象的相等关系
+自反性：x.equals(x)应该返回true
+对称性：x.equals(y)如果是true，那么y.equals(x)也应该返回true
+传递性：如果x.equals(y)结果是true，y.equals(z)结果是true,那么x.equals(z)的结果也应该是true
+一致性：多次调用x.equals(y)应该一致反回true或者false
+Object的equals方法实现了差别可能性最大的相等关系，对于两个非空的引用值x和y，当且仅当x和y指向同一个对象时，equals方法才返回true（即x==y时equals返回结果为true）
+通常重写这个方法时应该重写hashCode方法，来维护hashCode的合约，当equals方法返回两个对象相同时，hashCode方法返回相同的整数值
+
+clone()
+创建一个对象的克隆。克隆的确切含义依赖于被克隆对象，对于任意一个对象x，以下表达式可能成立：
+x.clone()!=x
+x.clone().getClass()==x.getClass()会返回true(这不是绝对要求)
+通常x.clone().equals(x)的返回值是true，但这不是一个绝对的要求
+通常，clone方法返回值的获取会调用父类的clone方法，如果一个类和他的所有父类对象遵循惯例，那么x.clone().getClass() == x.getClass()
+通常，这个方法返回的对象应该和正在被克隆的对象独立，为了实现这种独立，需要在super
+.clone()返回前修改掉对象的一个或者多个属性。明显，也就意味着复制任意组成这个对象的内部结构的可变对象，并且把他们的引用替换成复制后的引用。如果一个类只包含基本数据类型属性，或者不可变对象，那么不需要再调用super.clone()前修改他们。
+Object对象的clone方法执行明确的clone操作，首先，如果一个对象没有实现Cloneable接口，那么，CloneNotSupportedException将会被抛出。注意所有的数组都被认为实现了Cloneable接口，并且T[]数组的clone方法的返回值类型是T[]，其中T可以是任意的引用或者基本数据类型。
+如果没有按照通常的方式操作，这个方法创建一个这个类的新的实例对象，并且用当前复制对象的属性去初始化对象的所有属性，属性的内容不是他们自己的克隆值，因而这个方法执行了一个当前对象的“浅克隆”不是一个“深克隆”操作。
+Object对象本身并没有实现Cloneable接口，所以调用类型为Object的对象的clone方法时会导致抛出运行时异常
+
+
+
